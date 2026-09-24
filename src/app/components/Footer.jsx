@@ -13,14 +13,7 @@ const learningLinks = [
   { label: "Browse tutors", href: "/tutors" },
   { label: "How it works", href: "/how-it-works" },
   { label: "Become a tutor", href: "/add-tutor" },
-  { label: "My booked sessions", href: "/my-booked-sessions" },
-];
-
-const companyLinks = [
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "Privacy policy", href: "/privacy" },
-  { label: "Terms of service", href: "/terms" },
+  { label: "My booked sessions", href: "/profile/bookings" },
 ];
 
 const socials = [
@@ -34,7 +27,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-[#131F38] px-6 py-14 text-[#C7CBD6]">
       <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 text-[#FBFAF7]">
@@ -68,20 +61,6 @@ export default function Footer() {
             <h3 className="text-sm font-medium text-[#FBFAF7]">Learning</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
               {learningLinks.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="hover:text-[#FBFAF7]">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company links */}
-          <div>
-            <h3 className="text-sm font-medium text-[#FBFAF7]">Company</h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {companyLinks.map((link) => (
                 <li key={link.label}>
                   <Link href={link.href} className="hover:text-[#FBFAF7]">
                     {link.label}

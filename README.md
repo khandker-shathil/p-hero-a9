@@ -151,7 +151,6 @@ npm run dev
 **Frontend** (`.env.local`, at project root):
 
 ```
-NEXT_PUBLIC_API_URL=http://localhost:5050
 BETTER_AUTH_SECRET=your_secret_here
 BETTER_AUTH_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=your_google_client_id
@@ -206,3 +205,14 @@ mediqueue-backend/
 <!-- SCREENSHOT: optional closing shot — e.g. mobile responsive view -->
 
 *Built as part of a full-stack development assignment.*
+## Vercel deployment troubleshooting
+
+Tutor reads and writes use this Next.js app's MongoDB database (`mediaqueue`); no external tutor API URL is needed.
+
+Set `MONGODB_URI`, `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL` in Vercel for the environment being deployed. Set `BETTER_AUTH_URL` to the deployed HTTPS origin. For Google sign-in, also set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` and register the deployed `/api/auth/callback/google` URL with Google. Redeploy after changing environment variables.
+
+Ensure the MongoDB user can access `mediaqueue` and the database network rules allow connections from the deployment.
+
+React production error #441 indicates a Server Component failed; the browser intentionally hides the underlying message. Open the matching request in Vercel runtime logs and inspect the server error/digest to distinguish missing configuration, database connectivity, and other failures. Never share connection strings or secrets when reporting logs.
+
+The footer only links to implemented pages. Company/legal pages must be implemented before adding their links back.

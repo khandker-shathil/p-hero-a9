@@ -98,3 +98,8 @@ export async function deleteTutor(id, ownerId) {
   const result = await tutors.deleteOne({ _id: tutorId(id), ownerId });
   if (result.deletedCount === 0) throw new Error("Tutor not found or you do not have permission to delete it.");
 }
+
+export async function findTutorById(id) {
+  if (!ObjectId.isValid(id)) return null;
+  return tutors.findOne({ _id: new ObjectId(id) });
+}
