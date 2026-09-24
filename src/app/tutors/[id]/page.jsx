@@ -13,6 +13,12 @@ import {
 import { getTutorDetails } from "@/lib/tutors";
 import BookingButton from "@/app/components/ui/bookinbutton";
 
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const tutor = await getTutorDetails(id);
+  return { title: tutor ? `${tutor.name} — Tutor` : "Tutor not found" };
+}
+
 export default async function TutorDetailsPage({ params }) {
   const { id } = await params;
   const tutor = await getTutorDetails(id);

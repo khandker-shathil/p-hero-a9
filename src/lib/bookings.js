@@ -71,3 +71,37 @@ export async function getBookingsForUser(userId) {
     ])
     .toArray();
 }
+
+export async function cancelBooking({ bookingId, userId }) {
+  if (!userId) throw new Error("Please log in before cancelling a booking.");
+  if (!ObjectId.isValid(bookingId)) throw new Error("Invalid booking ID.");
+
+  const bookings = db.collection("bookings");
+  const tutors = db.collection("tutors");
+  const bookingObjectId = new ObjectId(bookingId);
+
+  // A user can cancel only their own confirmed booking.
+  const booking = await bookings.findOneAndUpdate(
+    { _id: bookingObjectId, userId, status: "confirmed" },
+    { $set: { status: "cancelled", cancelledAt: new Date(), updatedAt: new Date() } },
+    { returnDocument: "before" }
+  );
+
+  if (!booking) throw new Error("Confirmed booking not found.");
+
+  try {
+    const tutorUpdate = await tutors.updateOne(
+      { _id: booking.tutorId },
+      { $inc: { totalSlot: 1 } }
+    );
+
+    if (tutorUpdate.matchedCount === 0) throw new Error("Tutor not found.");
+  } catch (error) {
+    // Keep the booking confirmed if its slot could not be restored.
+    await bookings.updateOne(
+      { _id: bookingObjectId },
+      { $set: { status: "confirmed" }, $unset: { cancelledAt: "", updatedAt: "" } }
+    );
+    throw error;
+  }
+}

@@ -1,10 +1,9 @@
-import { BookOpenCheck, Users } from "lucide-react";
-import { TutorCard } from "../components/Tutor";
-import { getTutors } from "@/lib/tutors";
+import { BookOpenCheck } from "lucide-react";
+import TutorBrowser from "../components/TutorBrowser";
 
-export default async function TutorsPage() {
-  const tutors = await getTutors();
+export const metadata = { title: "Tutors" };
 
+export default function TutorsPage() {
   return (
     <main className="min-h-screen bg-[#FBFAF7]">
       <section className="relative overflow-hidden bg-[#1B2A4A]">
@@ -29,10 +28,6 @@ export default async function TutorsPage() {
                 Explore tutors by subject, schedule, teaching mode, and price—then choose the right fit for you.
               </p>
             </div>
-            <div className="flex w-fit items-center gap-3 border border-white/15 bg-white/5 px-4 py-3 text-sm text-[#FBFAF7]">
-              <Users size={18} className="text-[#A9CFB5]" />
-              <span><strong>{tutors.length}</strong> tutors available</span>
-            </div>
           </div>
         </div>
       </section>
@@ -48,20 +43,7 @@ export default async function TutorsPage() {
           </div>
         </div>
 
-        {tutors.length > 0 ? (
-          <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-            {tutors.map((tutor) => (
-              <TutorCard key={tutor._id} tutors={tutor} />
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-xl border border-dashed border-[#D9D4C8] bg-white px-6 py-14 text-center">
-            <h2 className="text-2xl text-[#1B2A4A]" style={{ fontFamily: "var(--font-fraunces, serif)" }}>
-              No tutors are available yet.
-            </h2>
-            <p className="mt-2 text-sm text-[#6B7280]">Please check back soon for new tutors and open session slots.</p>
-          </div>
-        )}
+        <TutorBrowser />
       </section>
     </main>
   );

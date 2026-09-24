@@ -1,3 +1,47 @@
 @import "tailwindcss";
 @import "@heroui/styles"; 
 @plugin "daisyui";
+
+html.dark {
+  color-scheme: dark;
+  background: #0f172a;
+}
+
+html.dark body,
+html.dark .bg-\[\#F6F5F1\],
+html.dark .bg-\[\#FBFAF7\],
+html.dark .bg-slate-50 {
+  background-color: #0f172a !important;
+}
+
+html.dark .bg-white,
+html.dark .bg-white\/95 {
+  background-color: #172033 !important;
+}
+
+html.dark .border-slate-200,
+html.dark .border-slate-100,
+html.dark .border-\[\#E7E3DA\] {
+  border-color: #334155 !important;
+}
+
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark .text-slate-600,
+html.dark .text-\[\#131F38\],
+html.dark .text-\[\#1B2A4A\] {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-500,
+html.dark .text-\[\#6B7280\] {
+  color: #a8b4c7 !important;
+}
+
+html.dark input,
+html.dark select {
+  background-color: #0f172a !important;
+  border-color: #475569 !important;
+  color: #e2e8f0 !important;
+}

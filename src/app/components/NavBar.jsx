@@ -2,6 +2,7 @@ import getSession from "@/lib/session";
 import Link from "next/link";
 import { GraduationCap, Menu, X } from "lucide-react";
 import UserMenu from "./ui/usermenu";
+import ThemeToggle from "./ui/themetoggle";
 
 const baseLinks = [
   { href: "/", label: "Home" },
@@ -10,7 +11,13 @@ const baseLinks = [
 
 function NavigationLinks({ user, mobile = false }) {
   const links = user
-    ? [...baseLinks, { href: "/profile", label: "Profile" }]
+    ? [
+        ...baseLinks,
+        { href: "/add-tutor", label: "Add Tutor" },
+        { href: "/my-tutors", label: "My Tutors" },
+        { href: "/profile/bookings", label: "My Bookings" },
+        { href: "/profile", label: "Profile" },
+      ]
     : baseLinks;
 
   return links.map(({ href, label }) => (
@@ -53,6 +60,7 @@ export default async function NavBar() {
         </ul>
 
         <div className="hidden items-center gap-1 md:flex">
+          <ThemeToggle />
           {user ? (
             <UserMenu user={user} />
           ) : (
@@ -78,6 +86,7 @@ export default async function NavBar() {
               <NavigationLinks user={user} mobile />
             </ul>
             <div className="mt-2 border-t border-slate-100 p-2">
+              <div className="mb-2 flex items-center justify-between px-2 text-sm text-slate-600"><span>Appearance</span><ThemeToggle /></div>
               {user ? (
                 <UserMenu user={user} />
               ) : (

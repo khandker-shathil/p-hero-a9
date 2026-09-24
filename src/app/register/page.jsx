@@ -21,6 +21,7 @@ const fields = [
 export default function RegistrationPage() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -35,15 +36,24 @@ export default function RegistrationPage() {
   const onSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    const password = String(formData.get("password") || "");
+
+    if (!/(?=.*[A-Z])(?=.*[a-z]).{6,}/.test(password)) {
+      const message = "Password needs at least 6 characters, one uppercase letter, and one lowercase letter.";
+      setPasswordError(message);
+      toast.error(message);
+      return;
+    }
+
+    setPasswordError("");
     setLoading(true);
     const { error } = await authClient.signUp.email({
-      email: formData.get("email"), password: formData.get("password"), name: formData.get("username"), image: formData.get("photoURL"), callbackURL: "/",
+      email: formData.get("email"), password, name: formData.get("username"), image: formData.get("photoURL"), callbackURL: "/login",
     });
     setLoading(false);
     if (error) return toast.error(error.message || "We couldn't create your account");
     toast.success("Your account has been created!");
-    router.push("/");
-    router.refresh();
+    router.push("/login");
   };
 
   const handleGoogleSignIn = async () => {
@@ -58,7 +68,7 @@ export default function RegistrationPage() {
           <Link href="/" className="inline-flex items-center gap-2 text-[#131F38] lg:hidden" style={{ fontFamily: "var(--font-fraunces, serif)" }}><GraduationCap size={22} /> MediQueue</Link>
           <h1 className="mt-8 text-3xl text-[#131F38]" style={{ fontFamily: "var(--font-fraunces, serif)" }}>Create your account</h1><p className="mt-2 text-sm text-slate-600">Find a tutor and make learning time yours.</p>
           <form className="mt-7 space-y-4" onSubmit={onSubmit}>
-            {fields.map(({ name, label, type, placeholder, autoComplete, Icon }) => <label key={name} className="block text-sm font-medium text-slate-700">{label}<span className="relative mt-1.5 block"><Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input required name={name} type={type} minLength={name === "password" ? 8 : undefined} pattern={name === "password" ? "(?=.*[A-Z])(?=.*[0-9]).{8,}" : undefined} title={name === "password" ? "Use at least 8 characters, including one uppercase letter and number." : undefined} autoComplete={autoComplete} placeholder={placeholder} className="w-full rounded-lg border border-slate-300 py-2.5 pl-10 pr-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#131F38] focus:ring-2 focus:ring-[#131F38]/15" /></span>{name === "password" && <span className="mt-1.5 block text-xs font-normal text-slate-500">At least 8 characters, with an uppercase letter and number.</span>}</label>)}
+            {fields.map(({ name, label, type, placeholder, autoComplete, Icon }) => <label key={name} className="block text-sm font-medium text-slate-700">{label}<span className="relative mt-1.5 block"><Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input required name={name} type={type} minLength={name === "password" ? 6 : undefined} pattern={name === "password" ? "(?=.*[A-Z])(?=.*[a-z]).{6,}" : undefined} title={name === "password" ? "Use at least 6 characters, including one uppercase and one lowercase letter." : undefined} onChange={name === "password" ? () => setPasswordError("") : undefined} autoComplete={autoComplete} placeholder={placeholder} className="w-full rounded-lg border border-slate-300 py-2.5 pl-10 pr-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#131F38] focus:ring-2 focus:ring-[#131F38]/15" /></span>{name === "password" && <><span className="mt-1.5 block text-xs font-normal text-slate-500">At least 6 characters, with uppercase and lowercase letters.</span>{passwordError && <span className="mt-1 block text-xs font-normal text-red-600">{passwordError}</span>}</>}</label>)}
             <button type="submit" disabled={loading} className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#131F38] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#1e3056] disabled:cursor-not-allowed disabled:opacity-60">{loading ? "Creating account…" : <>Create account <ArrowRight size={17} /></>}</button>
           </form>
           <div className="my-6 flex items-center gap-3"><div className="h-px flex-1 bg-slate-200" /><span className="text-xs text-slate-500">OR</span><div className="h-px flex-1 bg-slate-200" /></div>
