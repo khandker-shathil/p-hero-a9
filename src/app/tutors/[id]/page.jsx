@@ -11,6 +11,7 @@ import {
   Users,
 } from "lucide-react";
 import { getTutorDetails } from "@/lib/tutors";
+import BookingButton from "@/app/components/ui/bookinbutton";
 
 export default async function TutorDetailsPage({ params }) {
   const { id } = await params;
@@ -97,9 +98,7 @@ export default async function TutorDetailsPage({ params }) {
               </p>
               <p className="mt-1 text-sm text-[#6B7280]">Choose a session time that fits your schedule.</p>
             </div>
-            <button type="button" disabled={isFull} className="mt-6 w-full rounded-md bg-[#1B2A4A] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#243759] disabled:cursor-not-allowed disabled:bg-[#D9D4C8]">
-              {isFull ? "Fully booked" : "Book a session"}
-            </button>
+            <BookingButton tutorId={tutor._id.toString()} isFull={isFull} />
             <p className="mt-3 text-center text-xs text-[#6B7280]">You’ll choose your time before confirming.</p>
           </aside>
         </div>

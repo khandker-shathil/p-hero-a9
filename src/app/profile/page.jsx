@@ -1,8 +1,9 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CalendarDays, GraduationCap, Mail, ShieldCheck } from "lucide-react";
+import { BookOpen, CalendarDays, ChevronRight, GraduationCap, Mail, ShieldCheck } from "lucide-react";
 import { EditUserModal } from "../components/ui/edituserinfo";
 
 export default async function ProfilePage() {
@@ -28,7 +29,7 @@ export default async function ProfilePage() {
               {user.image ? <Image src={user.image} alt={`${user.name}'s profile photo`} width={112} height={112} className="h-full w-full object-cover" priority /> : initial}
             </div>
             <div className="flex flex-col gap-5 pt-20 sm:flex-row sm:items-start sm:justify-between sm:pt-7">
-              <div><h2 className="text-2xl text-[#131F38]" style={{ fontFamily: "var(--font-fraunces, serif)" }}>{user.name}</h2><p className="mt-1 text-sm text-slate-600">Manage your MediQueue account details.</p></div>
+              <div className="pt-10"><h2 className="text-2xl text-[#131F38]" style={{ fontFamily: "var(--font-fraunces, serif)" }}>{user.name}</h2><p className="mt-1 text-sm text-slate-600">Manage your MediQueue account details.</p></div>
               <EditUserModal user={user} />
             </div>
             <dl className="mt-8 grid gap-3 border-t border-slate-100 pt-6 sm:grid-cols-2">
@@ -36,6 +37,10 @@ export default async function ProfilePage() {
               <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-4"><CalendarDays size={19} className="shrink-0 text-[#3F6E52]" /><div><dt className="text-xs font-medium uppercase tracking-wide text-slate-500">Member since</dt><dd className="mt-1 text-sm font-medium text-slate-800">{joinedDate}</dd></div></div>
             </dl>
           </div>
+        </section>
+        <section className="mt-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:flex sm:items-center sm:justify-between sm:px-8">
+          <div className="flex items-center gap-4"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EAF3ED] text-[#3F6E52]"><BookOpen size={21} /></span><div><h2 className="text-lg text-[#131F38]" style={{ fontFamily: "var(--font-fraunces, serif)" }}>My bookings</h2><p className="mt-0.5 text-sm text-slate-600">View your booked tutoring sessions.</p></div></div>
+          <Link href="/profile/bookings" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[#131F38] transition hover:text-[#3F6E52] sm:mt-0">View sessions <ChevronRight size={17} /></Link>
         </section>
         <p className="mt-5 flex items-center justify-center gap-2 text-center text-xs text-slate-500"><ShieldCheck size={15} className="text-[#3F6E52]" /> Your account information is securely managed by MediQueue.</p>
       </div>
