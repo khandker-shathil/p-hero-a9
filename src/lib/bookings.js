@@ -5,8 +5,6 @@ import { MongoClient, ObjectId } from "mongodb";
 const client = new MongoClient(process.env.MONGODB_URI);
 const db = client.db("mediaqueue");
 
-// This is a named export, so the route can use:
-// import { createBooking } from "@/lib/bookings";
 export async function createBooking({ userId, tutorId }) {
   if (!userId) {
     throw new Error("Please log in before booking.");
@@ -20,7 +18,6 @@ export async function createBooking({ userId, tutorId }) {
   const bookings = db.collection("bookings");
   const tutorObjectId = new ObjectId(tutorId);
 
-  // Only reduce the slot when at least one is available.
   const tutor = await tutors.findOneAndUpdate(
     { _id: tutorObjectId, totalSlot: { $gt: 0 } },
     { $inc: { totalSlot: -1 } },
@@ -42,7 +39,7 @@ export async function createBooking({ userId, tutorId }) {
     await bookings.insertOne(booking);
     return booking;
   } catch (error) {
-    // Put the slot back if saving the booking fails.
+    
     await tutors.updateOne(
       { _id: tutorObjectId },
       { $inc: { totalSlot: 1 } }
@@ -80,7 +77,6 @@ export async function cancelBooking({ bookingId, userId }) {
   const tutors = db.collection("tutors");
   const bookingObjectId = new ObjectId(bookingId);
 
-  // A user can cancel only their own confirmed booking.
   const booking = await bookings.findOneAndUpdate(
     { _id: bookingObjectId, userId, status: "confirmed" },
     { $set: { status: "cancelled", cancelledAt: new Date(), updatedAt: new Date() } },
